@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "860518268482",
+    "project_id": "unicode-test-f484d",
+    "storage_bucket": "unicode-test-f484d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860518268482:android:20dad20fc34ae3a5e277db",
+        "android_client_info": {
+          "package_name": "com.example.unicode_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1DeiglD6hpU_QaDe2ElwLw4ZVIMTt1ds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

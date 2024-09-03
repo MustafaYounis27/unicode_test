@@ -122,7 +122,8 @@ class HomeCubit extends Cubit<HomeStates> {
     notes.filter((raw) => raw
         .where(
           (e) =>
-              (e.title.contains(searchController.text) || e.body.contains(searchController.text)) &&
+              (e.title.toLowerCase().contains(searchController.text.toLowerCase()) ||
+                  e.body.toLowerCase().contains(searchController.text.toLowerCase())) &&
               (filteredTopics.isNotEmpty ? e.topics.where((t) => filteredTopics.contains(t)).isNotEmpty : true),
         )
         .toList());
@@ -134,19 +135,32 @@ class HomeCubit extends Cubit<HomeStates> {
     // Load unsynced notes from hive
     final unsyncedNotes = injector.get<NoteRepository>().getUnsyncedNotes();
 
-    if (unsyncedNotes.isEmpty) return;
+    if (unsyncedNotes.isEmpty) {
+      emit(NotAllyncedSuccessfully());
+      return;
+    }
     // Upload unsynced notes to Firebase
+
+    emit(Loading());
+    bool allSynced = true;
 
     for (var note in unsyncedNotes) {
       var result = await injector.get<FirebaseRepository>().uploadNote(UID: AppSession.UID, note: note);
 
       result.fold(
-        (l) {},
+        (l) {
+          allSynced = false;
+        },
         (_) {
           note.setNoteSynced();
           injector.get<NoteRepository>().handleSavedNote(note: note);
         },
       );
+    }
+    if (allSynced) {
+      emit(NotesSyncedSuccessfully());
+    } else {
+      emit(NotAllyncedSuccessfully());
     }
   }
 }

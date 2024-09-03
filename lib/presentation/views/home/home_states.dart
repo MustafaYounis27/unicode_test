@@ -25,3 +25,7 @@ class NeedToLogin extends HomeStates {}
 class GetUserSuccessfully extends HomeStates {}
 
 class GetNotesSuccessfully extends HomeStates {}
+
+class NotesSyncedSuccessfully extends HomeStates {}
+
+class NotAllyncedSuccessfully extends HomeStates {}

@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:unicode_test/core/theme/colors.dart';
 import 'package:unicode_test/core/theme/styles.dart';
 import 'package:unicode_test/data/models/note_model.dart';
+import 'package:unicode_test/generated/locale_keys.g.dart';
 import 'package:unicode_test/presentation/shared_widgets/alerts.dart';
 import 'package:unicode_test/presentation/shared_widgets/primary/unified_body.dart';
 import 'package:unicode_test/presentation/shared_widgets/spacing.dart';
@@ -36,7 +38,7 @@ class _ManageNoteScreenState extends State<ManageNoteScreen> {
       child: BlocConsumer<ManageNoteCubit, ManageNoteStates>(
         listener: (context, state) {
           if (state is NoteSavedSuccessfully) {
-            String message = state.editMode ? 'Note updated successfully' : 'Note added successfully';
+            String message = state.editMode ? LocaleKeys.updatedSuccess.tr() : LocaleKeys.AddedSuccess.tr();
             Toasts.showSuccessToast(message: message);
             Navigator.pop(context);
             return;
@@ -56,7 +58,7 @@ class _ManageNoteScreenState extends State<ManageNoteScreen> {
                   icon: const Icon(Icons.save, color: ColorsPalletes.secondry500),
                 ),
               ],
-              title: _cubit.isEditMode ? 'Edit Note' : 'Add Note',
+              title: _cubit.isEditMode ? LocaleKeys.editNote.tr() : LocaleKeys.addNote.tr(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -65,7 +67,7 @@ class _ManageNoteScreenState extends State<ManageNoteScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('Topics :', style: TextStyles.bold_12),
+                        Text('${LocaleKeys.topics.tr()} :', style: TextStyles.bold_12),
                         horizontalSpace(10.r),
                         Expanded(
                           child: Wrap(
@@ -77,7 +79,7 @@ class _ManageNoteScreenState extends State<ManageNoteScreen> {
                                     (e) => InkWell(
                                       onTap: () async {
                                         var result = await Alerts(context)
-                                            .yesOrNoDialog(title: 'Topic $e', body: 'Are you sure you need to remove this topic ?');
+                                            .yesOrNoDialog(title: '${LocaleKeys.topic.tr()} $e', body: LocaleKeys.sureToRemoveTopic.tr());
 
                                         if (result != true) return;
 
@@ -126,7 +128,7 @@ class _ManageNoteScreenState extends State<ManageNoteScreen> {
                     style: TextStyles.bold_18,
                     decoration: InputDecoration(
                       contentPadding: REdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                      hintText: 'Title',
+                      hintText: LocaleKeys.title.tr(),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       hintStyle: TextStyles.regular_14.copyWith(color: ColorsPalletes.grey500),
                       focusedBorder: InputBorder.none,
@@ -146,7 +148,7 @@ class _ManageNoteScreenState extends State<ManageNoteScreen> {
                       style: TextStyles.regular_16,
                       decoration: InputDecoration(
                         contentPadding: REdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                        hintText: 'Body',
+                        hintText: LocaleKeys.body.tr(),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         hintStyle: TextStyles.regular_14.copyWith(color: ColorsPalletes.grey500),
                         focusedBorder: InputBorder.none,

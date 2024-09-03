@@ -17,6 +17,8 @@ import 'package:unicode_test/data_access/database/hive.dart';
 import 'package:unicode_test/firebase_options.dart';
 import 'package:workmanager/workmanager.dart';
 
+ValueNotifier<DateTime?> reRenderWholeAppNotifier = ValueNotifier<DateTime?>(null);
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveDatabase().setup();
@@ -78,26 +80,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final botToastBuilder = BotToastInit();
-    return ScreenUtilInit(
-      minTextAdapt: true,
-      fontSizeResolver: (fontSize, instance) => fontSizeResolver(context, fontSize),
-      splitScreenMode: true,
-      useInheritedMediaQuery: true,
-      child: MaterialApp(
-        title: 'UNICODE Test',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.theme,
-        locale: context.locale,
-        supportedLocales: context.supportedLocales,
-        localizationsDelegates: context.localizationDelegates,
-        initialRoute: '/',
-        navigatorKey: Routes.navigatorKey,
-        onGenerateRoute: routes.controller,
-        builder: (context, child) {
-          child = botToastBuilder(context, child);
-          return child;
-        },
-      ),
+    return ValueListenableBuilder<DateTime?>(
+      valueListenable: reRenderWholeAppNotifier,
+      builder: (context, value, child) {
+        return ScreenUtilInit(
+          minTextAdapt: true,
+          fontSizeResolver: (fontSize, instance) => fontSizeResolver(context, fontSize),
+          splitScreenMode: true,
+          useInheritedMediaQuery: true,
+          child: MaterialApp(
+            title: 'UNICODE Test',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.theme,
+            locale: context.locale,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+            initialRoute: '/',
+            navigatorKey: Routes.navigatorKey,
+            onGenerateRoute: routes.controller,
+            builder: (context, child) {
+              child = botToastBuilder(context, child);
+              return child;
+            },
+          ),
+        );
+      },
     );
   }
 
